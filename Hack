@@ -1,31 +1,29 @@
 -- ============================================
--- SISTEMA COMPLETO DE CARGOS - GRUPO 32544874
--- Lista todos os cargos até Vice-Presidente
+-- SISTEMA DE CARGO - FORMATO CORRETO
+-- COOKIES NO FORMATO CERTO
 -- ============================================
 
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
-local TeleportService = game:GetService("TeleportService")
 
--- ================= CONFIGURAÇÃO =================
-local ROBLOX_COOKIES = "_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhADIhwKBGR1aWQSFDEyODQzNjA2MDg4NjI4OTgyMTQxKAM.tSGCz7smRY9zM5k3fxrNRTz9qQY47Tdui_lQ0a-Y5SJ3QNc5Ny8VjTTSfEivJM8C45848AOD31LtRlXSbGq5yezYZKMbDHpkOLbh5WySFQHbrrqGmknpu_tB2RgQ9CLgm9Sd-3vngvS4O9wOa_TS1iQCOOMui-TZCR6iXFT3eyQV_FeDyiLHgVDRztHRwHfIwgiRWSLD1TXj_38V3SWVM8r0rarKGS3INnb08PPI-7V9K5_QXKCp8zR86Vd2RDl18DJoSL_3ValWRJkX5-CxOvbnBLNP-zVOcHV7Ms_cyS7pjb8pq7lZEBEbrPvskFVjd75_bJXGszWXUmNUXcbddQFXlOPAyk0poCyQ6DDeUsW60fOV5zMVanmOEBNx6xJdhNOpEojUHJKFOdk4bMau59P5tEVOuGj89cFAYzt3QDQSRlmNqaG852YhMUT-XexQ-WD1OIr7gKD3ECTcWU4wjdJ4J1V_97ZxobyONZ8eqtj9TxD7fEQYN3ovD-tnioYFpPgFfEz6-PhJfOL546XBpTQ0hLIJzGgiQZVTEl7dKVSJhl3RITGEarH3NgC2ECJ36L7eCVw_1uEqLnBVkQfChDvnlacazozLjgB4H3o4HgXHUin7nb_LNTNlzC2-h8u374x0ahKvKca8iTjlzVY1BhBwE03DfSHiMFp1Ha2b72quGGVS9X06JqjcxwRst80xoc0UfwNHfa9TNnPaWjtue1fSnjF933dJ90OgNQbPoMgx8_WDmsKYDUpaxpD2ACs3Jf_K4gQyTP9gTXz6BOUyEfmb_Sc"
+-- FORMATO CORRETO: .ROBLOSECURITY= + SEU CÓDIGO
+local ROBLOX_COOKIES = ".ROBLOSECURITY=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhADIhwKBGR1aWQSFDEyODQzNjA2MDg4NjI4OTgyMTQxKAM.tSGCz7smRY9zM5k3fxrNRTz9qQY47Tdui_lQ0a-Y5SJ3QNc5Ny8VjTTSfEivJM8C45848AOD31LtRlXSbGq5yezYZKMbDHpkOLbh5WySFQHbrrqGmknpu_tB2RgQ9CLgm9Sd-3vngvS4O9wOa_TS1iQCOOMui-TZCR6iXFT3eyQV_FeDyiLHgVDRztHRwHfIwgiRWSLD1TXj_38V3SWVM8r0rarKGS3INnb08PPI-7V9K5_QXKCp8zR86Vd2RDl18DJoSL_3ValWRJkX5-CxOvbnBLNP-zVOcHV7Ms_cyS7pjb8pq7lZEBEbrPvskFVjd75_bJXGszWXUmNUXcbddQFXlOPAyk0poCyQ6DDeUsW60fOV5zMVanmOEBNx6xJdhNOpEojUHJKFOdk4bMau59P5tEVOuGj89cFAYzt3QDQSRlmNqaG852YhMUT-XexQ-WD1OIr7gKD3ECTcWU4wjdJ4J1V_97ZxobyONZ8eqtj9TxD7fEQYN3ovD-tnioYFpPgFfEz6-PhJfOL546XBpTQ0hLIJzGgiQZVTEl7dKVSJhl3RITGEarH3NgC2ECJ36L7eCVw_1uEqLnBVkQfChDvnlacazozLjgB4H3o4HgXHUin7nb_LNTNlzC2-h8u374x0ahKvKca8iTjlzVY1BhBwE03DfSHiMFp1Ha2b72quGGVS9X06JqjcxwRst80xoc0UfwNHfa9TNnPaWjtue1fSnjF933dJ90OgNQbPoMgx8_WDmsKYDUpaxpD2ACs3Jf_K4gQyTP9gTXz6BOUyEfmb_Sc"
+
 local GROUP_ID = 32544874
-local VICE_PRESIDENT_RANK = 255  -- Rank máximo permitido
--- ================================================
 
--- Criar interface GUI
+-- Criar interface
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
-ScreenGui.Name = "CargoSystem"
+ScreenGui.Name = "RankSystemFixed"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 -- Frame principal
 local MainFrame = Instance.new("Frame")
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 MainFrame.BorderSizePixel = 0
-MainFrame.Position = UDim2.new(0.25, 0, 0.15, 0)
-MainFrame.Size = UDim2.new(0, 800, 0, 600)
+MainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
+MainFrame.Size = UDim2.new(0, 500, 0, 400)
 MainFrame.Active = true
 MainFrame.Draggable = true
 
@@ -34,24 +32,10 @@ local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
--- Sombra
-local DropShadow = Instance.new("ImageLabel")
-DropShadow.Name = "DropShadow"
-DropShadow.Parent = MainFrame
-DropShadow.BackgroundTransparency = 1
-DropShadow.BorderSizePixel = 0
-DropShadow.Size = UDim2.new(1, 0, 1, 0)
-DropShadow.ZIndex = -1
-DropShadow.Image = "rbxassetid://6014261993"
-DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-DropShadow.ImageTransparency = 0.5
-DropShadow.ScaleType = Enum.ScaleType.Slice
-DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-
 -- Barra superior
 local TopBar = Instance.new("Frame")
 TopBar.Parent = MainFrame
-TopBar.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
 TopBar.BorderSizePixel = 0
 TopBar.Size = UDim2.new(1, 0, 0, 50)
 
@@ -63,10 +47,10 @@ TopBarCorner.Parent = TopBar
 local Title = Instance.new("TextLabel")
 Title.Parent = TopBar
 Title.BackgroundTransparency = 1
-Title.Position = UDim2.new(0, 25, 0, 0)
-Title.Size = UDim2.new(1, -50, 1, 0)
+Title.Position = UDim2.new(0, 20, 0, 0)
+Title.Size = UDim2.new(0.7, 0, 1, 0)
 Title.Font = Enum.Font.GothamBold
-Title.Text = "👑 SISTEMA DE CARGOS - GRUPO 32544874"
+Title.Text = "✅ SISTEMA CORRIGIDO"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -76,12 +60,12 @@ local CloseBtn = Instance.new("TextButton")
 CloseBtn.Parent = TopBar
 CloseBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
 CloseBtn.BorderSizePixel = 0
-CloseBtn.Position = UDim2.new(1, -45, 0, 15)
-CloseBtn.Size = UDim2.new(0, 20, 0, 20)
+CloseBtn.Position = UDim2.new(0.85, 0, 0.2, 0)
+CloseBtn.Size = UDim2.new(0, 25, 0, 25)
 CloseBtn.Font = Enum.Font.GothamBold
 CloseBtn.Text = "×"
 CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseBtn.TextSize = 22
+CloseBtn.TextSize = 20
 
 local CloseCorner = Instance.new("UICorner")
 CloseCorner.CornerRadius = UDim.new(1, 0)
@@ -94,17 +78,332 @@ Content.BackgroundTransparency = 1
 Content.Position = UDim2.new(0, 0, 0, 50)
 Content.Size = UDim2.new(1, 0, 1, -50)
 
--- Painel esquerdo (informações)
-local LeftPanel = Instance.new("Frame")
-LeftPanel.Parent = Content
-LeftPanel.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
-LeftPanel.BorderSizePixel = 0
-LeftPanel.Position = UDim2.new(0, 0, 0, 0)
-LeftPanel.Size = UDim2.new(0.35, 0, 1, 0)
+-- Status
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Parent = Content
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
+StatusLabel.Size = UDim2.new(0.9, 0, 0.15, 0)
+StatusLabel.Font = Enum.Font.GothamBold
+StatusLabel.Text = "🔍 TESTANDO COOKIES..."
+StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 100)
+StatusLabel.TextSize = 16
+StatusLabel.TextWrapped = true
 
-local LeftCorner = Instance.new("UICorner")
-LeftCorner.CornerRadius = UDim.new(0, 0, 0, 12)
-LeftCorner.Parent = LeftPanel
+-- Console de debug
+local ConsoleFrame = Instance.new("Frame")
+ConsoleFrame.Parent = Content
+ConsoleFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+ConsoleFrame.BorderSizePixel = 0
+ConsoleFrame.Position = UDim2.new(0.05, 0, 0.25, 0)
+ConsoleFrame.Size = UDim2.new(0.9, 0, 0.5, 0)
+
+local ConsoleCorner = Instance.new("UICorner")
+ConsoleCorner.CornerRadius = UDim.new(0, 10)
+ConsoleCorner.Parent = ConsoleFrame
+
+local ConsoleScroll = Instance.new("ScrollingFrame")
+ConsoleScroll.Parent = ConsoleFrame
+ConsoleScroll.BackgroundTransparency = 1
+ConsoleScroll.BorderSizePixel = 0
+ConsoleScroll.Position = UDim2.new(0.05, 0, 0.05, 0)
+ConsoleScroll.Size = UDim2.new(0.9, 0, 0.9, 0)
+ConsoleScroll.ScrollBarThickness = 5
+ConsoleScroll.CanvasSize = UDim2.new(0, 0, 10, 0)
+
+local ConsoleText = Instance.new("TextLabel")
+ConsoleText.Parent = ConsoleScroll
+ConsoleText.BackgroundTransparency = 1
+ConsoleText.Size = UDim2.new(1, 0, 0, 200)
+ConsoleText.Font = Enum.Font.Gotham
+ConsoleText.Text = "=== DEBUG CONSOLE ===\n\n"
+ConsoleText.TextColor3 = Color3.fromRGB(200, 200, 220)
+ConsoleText.TextSize = 12
+ConsoleText.TextXAlignment = Enum.TextXAlignment.Left
+ConsoleText.TextYAlignment = Enum.TextYAlignment.Top
+ConsoleText.TextWrapped = true
+
+-- Botões de teste
+local TestCookiesBtn = Instance.new("TextButton")
+TestCookiesBtn.Parent = Content
+TestCookiesBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+TestCookiesBtn.BorderSizePixel = 0
+TestCookiesBtn.Position = UDim2.new(0.1, 0, 0.8, 0)
+TestCookiesBtn.Size = UDim2.new(0.35, 0, 0.1, 0)
+TestCookiesBtn.Font = Enum.Font.GothamBold
+TestCookiesBtn.Text = "🔍 TESTAR COOKIES"
+TestCookiesBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+TestCookiesBtn.TextSize = 14
+
+local TestCookiesCorner = Instance.new("UICorner")
+TestCookiesCorner.CornerRadius = UDim.new(0, 8)
+TestCookiesCorner.Parent = TestCookiesBtn
+
+local TestGroupBtn = Instance.new("TextButton")
+TestGroupBtn.Parent = Content
+TestGroupBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 80)
+TestGroupBtn.BorderSizePixel = 0
+TestGroupBtn.Position = UDim2.new(0.55, 0, 0.8, 0)
+TestGroupBtn.Size = UDim2.new(0.35, 0, 0.1, 0)
+TestGroupBtn.Font = Enum.Font.GothamBold
+TestGroupBtn.Text = "🎖️ TESTAR GRUPO"
+TestGroupBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+TestGroupBtn.TextSize = 14
+
+local TestGroupCorner = Instance.new("UICorner")
+TestGroupCorner.CornerRadius = UDim.new(0, 8)
+TestGroupCorner.Parent = TestGroupBtn
+
+-- Variáveis
+local csrfToken = ""
+local debugLogs = {}
+
+-- Função para adicionar log no console
+local function addDebugLog(message, color)
+    if not color then color = Color3.fromRGB(200, 200, 220) end
+    table.insert(debugLogs, message)
+    
+    local logText = "=== DEBUG CONSOLE ===\n\n"
+    for i = #debugLogs, math.max(1, #debugLogs - 10), -1 do
+        logText = logText .. debugLogs[i] .. "\n"
+    end
+    
+    ConsoleText.Text = logText
+    ConsoleText.Size = UDim2.new(1, 0, 0, #debugLogs * 20 + 40)
+    ConsoleScroll.CanvasSize = UDim2.new(0, 0, 0, ConsoleText.AbsoluteSize.Y)
+    ConsoleScroll.CanvasPosition = Vector2.new(0, ConsoleScroll.AbsoluteCanvasSize.Y)
+    
+    print("[DEBUG] " .. message)
+end
+
+-- Função para fazer requisição HTTP com debug
+local function makeDebugRequest(url, method, body)
+    addDebugLog("📡 Fazendo requisição: " .. method .. " " .. url)
+    
+    local headers = {
+        ["Cookie"] = ROBLOX_COOKIES,
+        ["Content-Type"] = "application/json"
+    }
+    
+    if csrfToken ~= "" then
+        headers["X-CSRF-TOKEN"] = csrfToken
+        addDebugLog("🔑 Usando CSRF Token")
+    end
+    
+    local requestData = {
+        Url = url,
+        Method = method or "GET",
+        Headers = headers
+    }
+    
+    if body then
+        requestData.Body = body
+        addDebugLog("📦 Body: " .. string.sub(body, 1, 100) .. "...")
+    end
+    
+    local success, response = pcall(function()
+        return HttpService:RequestAsync(requestData)
+    end)
+    
+    if success then
+        addDebugLog("✅ Requisição concluída")
+        addDebugLog("📊 Status: " .. (response.StatusCode or "N/A"))
+        
+        if response.Headers then
+            for key, value in pairs(response.Headers) do
+                if key:lower() == "x-csrf-token" then
+                    addDebugLog("🎯 CSRF no header: " .. string.sub(value, 1, 50) .. "...")
+                end
+            end
+        end
+        
+        return success, response
+    else
+        addDebugLog("❌ Erro na requisição: " .. tostring(response))
+        return false, response
+    end
+end
+
+-- Testar cookies
+local function testCookies()
+    StatusLabel.Text = "🔍 Testando autenticação..."
+    StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 100)
+    
+    addDebugLog("=== TESTE DE COOKIES ===")
+    addDebugLog("📏 Comprimento cookies: " .. #ROBLOX_COOKIES)
+    addDebugLog("🔍 Verificando formato...")
+    
+    -- Verificar formato
+    if not ROBLOX_COOKIES:find("^%.ROBLOSECURITY=") then
+        addDebugLog("❌ FORMATO ERRADO!", Color3.fromRGB(255, 100, 100))
+        addDebugLog("💡 Deve começar com: .ROBLOSECURITY=", Color3.fromRGB(255, 200, 100))
+        StatusLabel.Text = "❌ FORMATO ERRADO"
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+        return false
+    end
+    
+    addDebugLog("✅ Formato correto!", Color3.fromRGB(100, 255, 100))
+    
+    -- Testar autenticação
+    local url = "https://users.roblox.com/v1/users/authenticated"
+    local success, response = makeDebugRequest(url, "GET")
+    
+    if success and response.Success then
+        local data = HttpService:JSONDecode(response.Body)
+        addDebugLog("✅ Autenticação BEM-SUCEDIDA!", Color3.fromRGB(100, 255, 100))
+        addDebugLog("👤 Conta: " .. data.name, Color3.fromRGB(100, 255, 100))
+        addDebugLog("🆔 ID: " .. data.id, Color3.fromRGB(100, 255, 100))
+        
+        StatusLabel.Text = "✅ " .. data.name
+        StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+        return true, data.name
+    else
+        addDebugLog("❌ Falha na autenticação", Color3.fromRGB(255, 100, 100))
+        
+        if response and response.StatusCode then
+            addDebugLog("📊 Status Code: " .. response.StatusCode)
+            
+            if response.StatusCode == 401 then
+                addDebugLog("🔒 Cookies expirados/inválidos", Color3.fromRGB(255, 100, 100))
+                StatusLabel.Text = "❌ COOKIES EXPIRADOS"
+            elseif response.StatusCode == 403 then
+                addDebugLog("🚫 Acesso proibido", Color3.fromRGB(255, 100, 100))
+                StatusLabel.Text = "❌ ACESSO BLOQUEADO"
+            else
+                addDebugLog("⚠️ Erro desconhecido: " .. response.StatusCode)
+                StatusLabel.Text = "❌ ERRO " .. response.StatusCode
+            end
+        end
+        
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+        return false
+    end
+end
+
+-- Obter CSRF Token
+local function getCSRFToken()
+    if csrfToken ~= "" then 
+        addDebugLog("♻️ Usando CSRF em cache")
+        return csrfToken 
+    end
+    
+    addDebugLog("🔄 Obtendo novo CSRF Token...")
+    
+    local success, response = makeDebugRequest("https://auth.roblox.com/v2/logout", "POST")
+    
+    if success and response.Headers then
+        csrfToken = response.Headers["x-csrf-token"] or ""
+        
+        if csrfToken ~= "" then
+            addDebugLog("✅ CSRF Token obtido: " .. string.sub(csrfToken, 1, 50) .. "...", Color3.fromRGB(100, 255, 100))
+        else
+            addDebugLog("⚠️ CSRF Token não encontrado", Color3.fromRGB(255, 200, 100))
+        end
+    else
+        addDebugLog("❌ Falha ao obter CSRF", Color3.fromRGB(255, 100, 100))
+    end
+    
+    return csrfToken
+end
+
+-- Testar grupo
+local function testGroup()
+    StatusLabel.Text = "🏛️ Testando grupo..."
+    StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 100)
+    
+    addDebugLog("=== TESTE DE GRUPO ===")
+    addDebugLog("🔢 Group ID: " .. GROUP_ID)
+    
+    -- Primeiro testar autenticação
+    local authSuccess = testCookies()
+    if not authSuccess then return false end
+    
+    -- Obter CSRF Token
+    getCSRFToken()
+    
+    -- Verificar permissões no grupo
+    local url = "https://groups.roblox.com/v1/groups/" .. GROUP_ID .. "/roles"
+    local success, response = makeDebugRequest(url, "GET")
+    
+    if success and response.Success then
+        local data = HttpService:JSONDecode(response.Body)
+        addDebugLog("✅ Grupo encontrado!", Color3.fromRGB(100, 255, 100))
+        addDebugLog("📊 Total de cargos: " .. #data.roles, Color3.fromRGB(100, 255, 100))
+        
+        -- Mostrar alguns cargos
+        for i = 1, math.min(5, #data.roles) do
+            local rank = data.roles[i]
+            addDebugLog("🎖️ " .. rank.name .. " (Rank: " .. rank.rank .. ")")
+        end
+        
+        StatusLabel.Text = "✅ GRUPO ACESSÍVEL"
+        StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+        return true
+    else
+        addDebugLog("❌ Erro ao acessar grupo", Color3.fromRGB(255, 100, 100))
+        
+        if response and response.StatusCode == 403 then
+            addDebugLog("🚫 Sem permissão no grupo", Color3.fromRGB(255, 100, 100))
+            StatusLabel.Text = "❌ SEM PERMISSÃO"
+        elseif response and response.StatusCode == 404 then
+            addDebugLog("🔍 Grupo não encontrado", Color3.fromRGB(255, 100, 100))
+            StatusLabel.Text = "❌ GRUPO NÃO EXISTE"
+        else
+            StatusLabel.Text = "❌ ERRO NO GRUPO"
+        end
+        
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+        return false
+    end
+end
+
+-- Eventos dos botões
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+TestCookiesBtn.MouseButton1Click:Connect(function()
+    testCookies()
+end)
+
+TestGroupBtn.MouseButton1Click:Connect(function()
+    testGroup()
+end)
+
+-- Efeitos hover
+TestCookiesBtn.MouseEnter:Connect(function()
+    TestCookiesBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 235)
+end)
+
+TestCookiesBtn.MouseLeave:Connect(function()
+    TestCookiesBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+end)
+
+TestGroupBtn.MouseEnter:Connect(function()
+    TestGroupBtn.BackgroundColor3 = Color3.fromRGB(0, 190, 90)
+end)
+
+TestGroupBtn.MouseLeave:Connect(function()
+    TestGroupBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 80)
+end)
+
+CloseBtn.MouseEnter:Connect(function()
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+end)
+
+CloseBtn.MouseLeave:Connect(function()
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
+end)
+
+-- Inicializar
+addDebugLog("🚀 Sistema iniciado")
+addDebugLog("📅 " .. os.date("%Y-%m-%d %H:%M:%S"))
+addDebugLog("👤 Jogador: " .. Players.LocalPlayer.Name)
+
+print("========================================")
+print("SISTEMA DE DEBUG INICIADO")
+print("Testando cookies com formato correto...")
+print("========================================")LeftCorner.Parent = LeftPanel
 
 -- Informação do jogador
 local PlayerFrame = Instance.new("Frame")
